@@ -64,7 +64,7 @@ fn main() {
     let file: String = std::fs::read_to_string(xml).unwrap();
     
     let scan: qualysx::Scan = qualysx::from_str(&file).unwrap();
-    let j = serde_json::to_string(&scan).unwrap();
+    let j = serde_json::to_string_pretty(&scan).unwrap();
     
     println!("{}", j);
 }
