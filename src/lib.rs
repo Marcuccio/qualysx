@@ -17,12 +17,10 @@ pub struct Scan {
     #[serde(rename = "HEADER")]
     pub headers: Vec<Header>,
     #[serde(rename = "IP")]
-    pub ips: Vec<IP>
+    pub ips: Vec<IP>,
     //#[serde(rename = "ERROR")]
     //pub error: String
 }
-
-
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct Header {
@@ -30,8 +28,8 @@ pub struct Header {
     keys: Vec<Key>,
     #[serde(rename = "ASSET_GROUPS")]
     asset_groups: Option<AssetGroups>,
-    //#[serde(rename = "ASSET_TAG_LIST")]
-    // asset_tag_list: Option<AssetTagList>,
+    #[serde(rename = "ASSET_TAG_LIST")]
+    asset_tag_list: Option<AssetTagList>,
     #[serde(rename = "OPTION_PROFILE")]
     option_profile: Option<OptionProfile>
 }
@@ -46,6 +44,25 @@ pub struct AssetGroups {
 pub struct AssetGroup {   
     #[serde(rename = "ASSET_GROUP_TITLE")]
     pub asset_group_title: String
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "UPPERCASE")]
+pub struct AssetTagList {   
+    pub included_tags: Option<IncludedTags>,
+    pub excluded_tags: Option<ExcludedTags>
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "UPPERCASE")]
+pub struct IncludedTags {
+    pub asset_tag: Vec<String>
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "UPPERCASE")]
+pub struct ExcludedTags {
+    pub asset_tag: Vec<String>
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -79,7 +96,7 @@ pub struct IP {
     pub os: Option<String>,
     #[serde(rename = "OS_CPE")]
     pub os_cpe: Option<String>,
-    #[serde(rename = "NETBIOS_HOSTNAME")]   
+    #[serde(rename = "NETBIOS_HOSTNAME")]
     pub netbios_hostname: Option<String>,
     #[serde(rename = "INFOS")]
     pub infos: Option<Infos>,
@@ -129,14 +146,11 @@ pub struct Practices {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "UPPERCASE")]
 pub enum TCat {
-    #[serde(rename = "INFO")]
     Info(Info),
-    #[serde(rename = "SERVICE")]
     Service(Service),
-    #[serde(rename = "VULN")]
     Vuln(Vuln),
-    #[serde(rename = "PRACTICE")]
     Practice(Practice)
 }
 
@@ -154,7 +168,7 @@ pub struct Cat {
 
 
 // scan -> IP -> vulns -> cat -> vuln
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]  
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct Vuln {
     pub number: String,
     pub severity: Option<String>,
@@ -209,7 +223,7 @@ pub struct Vuln {
     pub result_debug: Option<String>
 }
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)] 
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct Service {
     pub number: Option<String>,
     pub severity: Option<String>,
@@ -219,12 +233,12 @@ pub struct Service {
     pub title: Option<String>,
     #[serde(rename = "LAST_UPDATE")]
     pub last_update:Option<String>,
-    #[serde(rename  = "PCI_FLAG")]
+    #[serde(rename = "PCI_FLAG")]
     pub pci_flag: Option<String>,
     #[serde(rename = "INSTANCE")]
     pub instance: Option<String>,
     #[serde(rename = "VENDOR_REFERENCE_LIST")]
-    pub vendor_ref_list:Option<VendorReferenceList>,
+    pub vendor_reference_list:Option<VendorReferenceList>,
     #[serde(rename = "CVE_ID_LIST")]
     pub cve_id_list: Option<CveIdList>,
     #[serde(rename = "BUGTRAQ_ID_LIST")]
@@ -315,12 +329,12 @@ pub struct Info {
     pub title: Option<String>,
     #[serde(rename = "LAST_UPDATE")]
     pub last_update:Option<String>,
-    #[serde(rename  = "PCI_FLAG")]
+    #[serde(rename = "PCI_FLAG")]
     pub pci_flag: Option<String>,
     #[serde(rename = "INSTANCE")]
     pub instance: Option<String>,
     #[serde(rename = "VENDOR_REFERENCE_LIST")]
-    pub vendor_ref_list:Option<VendorReferenceList>,
+    pub vendor_reference_list:Option<VendorReferenceList>,
     #[serde(rename = "CVE_ID_LIST")]
     pub cve_id_list: Option<CveIdList>,
     #[serde(rename = "BUGTRAQ_ID_LIST")]
@@ -340,7 +354,7 @@ pub struct Info {
     #[serde(rename = "COMPLIANCE")]
     pub compliance: Option<Compliance>,
     //#[serde(rename = "CORRELATION")]
-    //pub : Option<Correlation>,
+    //pub correlation: Option<Correlation>,
     #[serde(rename = "RESULT")]
     pub result: Option<String>,
     #[serde(rename = "RESULT_ERRORS")]
@@ -356,12 +370,10 @@ pub struct Compliance {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "UPPERCASE")]
 pub struct ComplianceInfo {
-    #[serde(rename = "COMPLIANCE_TYPE")]
     pub compliance_type: Option<String>,
-    #[serde(rename = "COMPLIANCE_SECTION")]
     pub compliance_section: Option<String>,
-    #[serde(rename = "COMPLIANCE_DESCRIPTION")]
     pub compliance_description: Option<String>
 }
 
@@ -373,10 +385,9 @@ pub struct CveIdList {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "UPPERCASE")]
 pub struct CveId {
-    #[serde(rename = "ID")]
     pub id: Option<String>,
-    #[serde(rename = "URL")]
     pub url: Option<String>,
 }
 
@@ -388,10 +399,9 @@ pub struct VendorReferenceList {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "UPPERCASE")]
 pub struct VendorReference {
-    #[serde(rename = "ID")]
     pub id: Option<String>,
-    #[serde(rename = "URL")]
     pub url: Option<String>,
 }
 
@@ -403,18 +413,16 @@ pub struct BugTraqIdList {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "UPPERCASE")]
 pub struct BugTraqId {
-    #[serde(rename = "ID")]
     pub id: Option<String>,
-    #[serde(rename = "URL")]
     pub url: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "UPPERCASE")]
 pub struct Correlation {
-    #[serde(rename = "EXPLOITABILITY")]
     pub exploitability: Option<Exploitability>,
-    #[serde(rename = "MALWARE")]
     pub malware: Option<Malware>,
 
 }
@@ -426,17 +434,16 @@ pub struct Exploitability {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "UPPERCASE")]
 pub struct ExploitSrc {
-    #[serde(rename = "SRC_NAME")]
     pub src_name: String,
-    #[serde(rename = "EXPLT_LIST")]
     pub explt_list: ExpltList
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct ExpltList {
     #[serde(rename = "EXPLT")]
-    pub explt_list: Vec<Explt>
+    pub explts: Vec<Explt>
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -449,8 +456,6 @@ pub struct Explt {
     pub link: Option<String>
 }
 
-
-
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct Malware {
     #[serde(rename = "MW_SRC")]
@@ -458,10 +463,9 @@ pub struct Malware {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "UPPERCASE")]
 pub struct MWSrc {
-    #[serde(rename = "SRC_NAME")]
-    pub id: Option<String>,
-    #[serde(rename = "MW_LIST")]
+    pub src_name: Option<String>,
     pub mw_list: Option<MWList>,
 }
 
@@ -472,18 +476,13 @@ pub struct MWList {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "UPPERCASE")]
 pub struct MWInfo {
-    #[serde(rename = "MW_ID")]
     pub mw_id: String,
-    #[serde(rename = "MW_TYPE")]
     pub mw_type: Option<String>,
-    #[serde(rename = "MW_PLATFORM")]
     pub mw_plat: Option<String>,
-    #[serde(rename = "MW_ALIAS")]
     pub mw_alias: Option<String>,
-    #[serde(rename = "MW_RATING")]
     pub mw_rating: Option<String>,
-    #[serde(rename = "UMW_LINK")]
     pub mw_link: Option<String>,
 }
 
