@@ -50,9 +50,7 @@ pub fn get_stdio_lines() -> Vec<String> {
     let mut lines_vec = Vec::new();
     lines.into_iter().for_each(|line| match line {
         Ok(line) => {
-            if line.starts_with("CVE") {
-                lines_vec.push(line);
-            }
+            lines_vec.push(line);
         }
         Err(_) => {
             error("Error reading line from stdin".to_string());

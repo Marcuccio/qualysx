@@ -54,16 +54,19 @@ fn main() {
 
     }
 
-    if !util::check_exist_file(xml) {
-        std::process::exit(1);        
-    }
-
     util::warn("Use with caution. You are responsible for your actions.".to_string());
     util::warn("Developers assume no liability and are not responsible for any misuse or damage.".to_string());
     
-    let file: String = std::fs::read_to_string(xml).unwrap();
+    let file: String = match std::fs::read_to_string(xml) {
+        Ok(file) => file,
+        Err(err) => {
+            util::error(err.to_string());
+            std::process::exit(1);  
+        }
+    };
     
-    let scan: qualysx::Scan = qualysx::from_str(&file).unwrap();
+    let scan: qualysx::Scan = serde_xml_rs::from_str(&file).unwrap();
+
     let j = serde_json::to_string_pretty(&scan).unwrap();
     
     println!("{}", j);
